@@ -10,21 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-    - name: Install Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.11"
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-    - name: Download XMLTV
-      run: |
-        curl -L -o input.xml "http://quantumtv.space:80/xmltv.php?username=Q.Robi135&password=Q.Robi411"
+      - name: Download XMLTV
+        run: |
+          curl -L -o input.xml "http://quantumtv.space:80/xmltv.php?username=Q.Robi135&password=Q.Robi411"
 
-    - name: Reorder XMLTV
-      run: |
-        python3 << 'EOF'
+      - name: Reorder XMLTV
+        run: |
+          python3 << 'EOF'
 import xml.etree.ElementTree as ET
 
 with open("input.xml", "r", encoding="utf-8") as f:
@@ -53,10 +53,10 @@ with open("epg.xml", "wb") as f:
     f.write(ET.tostring(root, encoding="utf-8", xml_declaration=True))
 EOF
 
-    - name: Upload artifact for GitHub Pages
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: .
+      - name: Upload artifact for GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
 
   deploy:
     needs: build
@@ -70,3 +70,7 @@ EOF
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+
+
+
