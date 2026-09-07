@@ -1,0 +1,73 @@
+name: XMLTV Auto Reorder
+
+on:
+  schedule:
+    - cron: "0 */8 * * *"   # každých 8 hodín
+  workflow_dispatch:        # manuálne spustenie
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Install Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Download XMLTV
+      run: |
+        curl -o input.xml "http://quantumtv.space:80/xmltv.php?username=Q.Robi135&password=Q.Robi411"
+
+    - name: Reorder XMLTV
+      run: |
+        python3 << 'EOF'
+import xml.etree.ElementTree as ET
+
+with open("input.xml", "r", encoding="utf-8") as f:
+    xml_raw = f.read()
+
+root = ET.fromstring(xml_raw)
+
+channels = []
+programmes = []
+
+for elem in root:
+    if elem.tag == "channel":
+        channels.append(elem)
+    elif elem.tag == "programme":
+        programmes.append(elem)
+
+root.clear()
+
+for ch in channels:
+    root.append(ch)
+
+for pr in programmes:
+    root.append(pr)
+
+with open("epg.xml", "wb") as f:
+    f.write(ET.tostring(root, encoding="utf-8", xml_declaration=True))
+EOF
+
+    - name: Publish to GitHub Pages
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
