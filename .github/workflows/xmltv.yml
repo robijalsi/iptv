@@ -1,9 +1,9 @@
 name: XMLTV Auto Reorder
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"   # každých 8 hodín
-  workflow_dispatch:        # manuálne spustenie
+    - cron: "0 */8 * * *"
 
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
 
     - name: Download XMLTV
       run: |
-        curl -o input.xml "http://quantumtv.space:80/xmltv.php?username=Q.Robi135&password=Q.Robi411"
+        curl -L -o input.xml "http://quantumtv.space:80/xmltv.php?username=Q.Robi135&password=Q.Robi411"
 
     - name: Reorder XMLTV
       run: |
@@ -53,7 +53,7 @@ with open("epg.xml", "wb") as f:
     f.write(ET.tostring(root, encoding="utf-8", xml_declaration=True))
 EOF
 
-    - name: Publish to GitHub Pages
+    - name: Upload artifact for GitHub Pages
       uses: actions/upload-pages-artifact@v3
       with:
         path: .
@@ -66,8 +66,10 @@ EOF
       id-token: write
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        deploy-pages@v4  - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
