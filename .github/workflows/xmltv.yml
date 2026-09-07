@@ -23,15 +23,15 @@ jobs:
       - name: Reorder XMLTV
         run: |
           python3 << 'EOF'
-import xml.etree.ElementTree as ET
+          import xml.etree.ElementTree as ET
 
-with open("input.xml", "r", encoding="utf-8") as f:
-    xml_raw = f.read()
+          with open("input.xml", "r", encoding="utf-8") as f:
+              xml_raw = f.read()
 
-root = ET.fromstring(xml_raw)
+          root = ET.fromstring(xml_raw)
 
-channels = []
-programmes = []
+          channels = []
+          programmes = []
 
 for elem in root:
     if elem.tag == "channel":
