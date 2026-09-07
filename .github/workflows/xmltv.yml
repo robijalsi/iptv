@@ -33,20 +33,20 @@ jobs:
           channels = []
           programmes = []
 
-for elem in root:
-    if elem.tag == "channel":
-        channels.append(elem)
-    elif elem.tag == "programme":
-        programmes.append(elem)
+          for elem in root:
+              if elem.tag == "channel":
+                  channels.append(elem)
+              elif elem.tag == "programme":
+                  programmes.append(elem)
 
-root.clear()
+          root.clear()
 
-for ch in channels:
-    root.append(ch)
+          for ch in channels:
+              root.append(ch)
 
-for pr in programmes:
-    root.append(pr)
+          for pr in programmes:
+              root.append(pr)
 
-with open("epg.xml", "wb") as f:
-    f.write(ET.tostring(root, encoding="utf-8", xml_declaration=True))
-EOF
+          with open("epg.xml", "wb") as f:
+              f.write(ET.tostring(root, encoding="utf-8", xml_declaration=True))
+          EOF
