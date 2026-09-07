@@ -50,5 +50,3 @@ for pr in programmes:
 with open("epg.xml", "wb") as f:
     f.write(ET.tostring(root, encoding="utf-8", xml_declaration=True))
 EOF
-
-
