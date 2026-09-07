@@ -50,3 +50,13 @@ jobs:
           with open("epg.xml", "wb") as f:
               f.write(ET.tostring(root, encoding="utf-8", xml_declaration=True))
           EOF
+
+
+      - name: Commit EPG
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add epg.xml
+          git commit -m "Update EPG"
+          git push
+
