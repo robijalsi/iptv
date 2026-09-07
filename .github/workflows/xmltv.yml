@@ -2,8 +2,6 @@ name: XMLTV Auto Reorder
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 */8 * * *"
 
 jobs:
   build:
@@ -52,25 +50,5 @@ for pr in programmes:
 with open("epg.xml", "wb") as f:
     f.write(ET.tostring(root, encoding="utf-8", xml_declaration=True))
 EOF
-
-      - name: Upload artifact for GitHub Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
-
 
 
