@@ -65,8 +65,8 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git commit -m "Update EPG"
-          git push
+          git commit -m "Update EPG" || echo "No changes to commit"
+          git push || echo "Nothing to push"
 
       - name: Remove input.xml
         run: rm -f input.xml
