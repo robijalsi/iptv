@@ -3,7 +3,7 @@ name: XMLTV Auto Reorder
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 5 * * *"
 
 jobs:
   build:
@@ -56,12 +56,16 @@ jobs:
               f.write(ET.tostring(root, encoding="utf-8", xml_declaration=True))
           EOF
 
+      - name: Check if EPG changed
+        run: |
+          git add epg.xml
+          git diff --quiet --cached && echo "No changes in epg.xml" && exit 0
+
 
       - name: Commit EPG
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add epg.xml
           git commit -m "Update EPG"
           git push
 
