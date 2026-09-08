@@ -58,7 +58,7 @@ jobs:
 
       - name: Stage EPG if changed
         run: |
-          git add epg.xml || exit 0
+          git add epg.xml
           git diff --cached --quiet && echo "No changes in epg.xml" && exit 0
 
 
@@ -68,4 +68,4 @@ jobs:
           git config user.email "actions@github.com"
           git commit -m "Update EPG"
           git push
-
+          
