@@ -68,4 +68,8 @@ jobs:
           git config user.email "actions@github.com"
           git commit -m "Update EPG"
           git push
+
+      - name: Remove input.xml
+        run: rm -f input.xml
+
           
